@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Helper
 
-## Getting Started
+A small multi-agent app that turns a job post into a LinkedIn message and a cover letter. Three AI agents each do one job, and a person approves the result.
 
-First, run the development server:
+Built by [Abhishek Bora](https://abhishekbora.myportfolio.com/), Principal Designer, as a hands-on project in AI agent design.
 
-```bash
+## How it works
+
+1. **Researcher.** Reads the job post. Returns what the company does, the top 5 needs of the role, and one product problem worth mentioning.
+2. **Writer.** Uses the research and my resume to write a LinkedIn message (under 80 words) and a short cover letter.
+3. **Reviewer.** Checks the draft against the style rules and the facts. If something breaks a rule, it sends notes back to the writer for one more round.
+4. **Human approval.** Nothing is final until I click Approve. I can edit the draft before approving.
+
+## Design decisions
+
+- **One job per agent.** Each agent has a short, clear brief. This makes each step easier to check and fix.
+- **The person stays in control.** The AI drafts. The person decides.
+- **Show the work.** The page shows each agent's output as it happens, so it is clear where every line came from.
+- **No made-up facts.** The writer can only use facts from the resume and the job post. The reviewer fails any claim it cannot trace back to them.
+- **Honest about gaps.** If the role asks for something the resume does not have, the letter says so in one plain sentence.
+- **Fixed facts stay fixed.** Location, notice period and portfolio link come from code, not from the AI.
+- **Style rules are checked twice.** Once by code (contractions, jargon, sentences starting with "I", message length) and once by the reviewer agent.
+
+## Tech
+
+- Next.js and TypeScript
+- Claude API (Sonnet) on the server. The API key never reaches the browser.
+- Built with Cursor and Claude
+
+## Run it locally
+
+1. Install Node.js.
+2. Copy `.env.example` to `.env.local` and add your Anthropic API key.
+3. Replace `resume.md` with your own resume, and update `lib/letter.ts` with your details.
+4. Run:
+
+```
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Open http://localhost:3000
